@@ -10,6 +10,7 @@ find_package(catkin REQUIRED COMPONENTS
   sensor_msgs
   std_msgs
   tf
+  urdf
 )
 
 ## System dependencies are found with CMake's conventions
@@ -57,8 +58,8 @@ find_package(catkin REQUIRED COMPONENTS
 catkin_package(
 #  INCLUDE_DIRS include
 #  LIBRARIES hubo_state_publisher
-#  CATKIN_DEPENDS roscpp rospy sensor_msgs std_msgs tf
-#  DEPENDS system_lib
+ CATKIN_DEPENDS roscpp sensor_msgs std_msgs urdf
+  DEPENDS tinyxml
 )
 
 ###########
@@ -71,7 +72,7 @@ catkin_package(
 include_directories(
   ${catkin_INCLUDE_DIRS}
 )
-
+link_libraries(tinyxml)
 ## Declare a cpp library
 # add_library(hubo_state_publisher
 #   src/${PROJECT_NAME}/hubo_state_publisher.cpp
@@ -79,6 +80,7 @@ include_directories(
 
 ## Declare a cpp executable
 add_executable(hubo_state_publisher_node src/hubo_state_publisher.cpp)
+add_executable(simple_hubo_state_publisher_node src/simple_hubo_state_publisher.cpp src/hubo_hw_state_publisher.cpp)
 add_executable(odom_robot_node src/hubo_state_publisher_test.cpp)
 add_executable(odom_vehicle_node src/vehicle_position_publisher.cpp)
 ## Add cmake target dependencies of the executable/library
@@ -89,6 +91,10 @@ add_executable(odom_vehicle_node src/vehicle_position_publisher.cpp)
 target_link_libraries(hubo_state_publisher_node
    ${catkin_LIBRARIES}
  )
+target_link_libraries(simple_hubo_state_publisher_node
+   ${catkin_LIBRARIES}
+ )
+
 target_link_libraries(odom_robot_node
    ${catkin_LIBRARIES}
  )
